@@ -48,6 +48,17 @@ tasks {
     }
 }
 
+sourceSets {
+    main {
+        java.srcDirs("src/main/kotlin")
+        resources.srcDirs("src/main/resources")
+    }
+    test {
+        java.srcDirs("src/test/kotlin")
+        resources.srcDirs("src/test/resources")
+    }
+}
+
 group = "online.senpai"
 version = "0.0.0-SNAPSHOT"
 
