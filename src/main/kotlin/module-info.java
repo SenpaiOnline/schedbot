@@ -8,5 +8,7 @@ open module online.senpai.schedbot {
     requires honeybadger.java;
     requires jdk.unsupported;
     requires mapdb;
-    requires clikt.jvm;
+    requires com.github.ajalt.clikt;
+    requires koin.logger.slf4j;
+    requires koin.core.jvm;
 }

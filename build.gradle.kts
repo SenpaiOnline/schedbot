@@ -25,10 +25,13 @@ dependencies {
     implementation("io.honeybadger:honeybadger-java:2.0.2")
     implementation("com.github.ajalt.clikt:clikt:3.2.0")
     implementation("org.mapdb:mapdb:3.0.8")
+    implementation("io.insert-koin:koin-core:3.1.0")
+    implementation("io.insert-koin:koin-logger-slf4j:3.1.0")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
 
     testImplementation("io.kotest:kotest-runner-junit5:4.4.3")
+    testImplementation("io.insert-koin:koin-test:3.1.0")
 }
 
 tasks {
