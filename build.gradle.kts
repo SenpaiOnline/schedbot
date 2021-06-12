@@ -23,7 +23,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation("io.netty:netty-transport-native-epoll:4.1.60.Final")
     implementation("io.honeybadger:honeybadger-java:2.0.2")
-    implementation("com.github.ajalt.clikt:clikt:3.1.0")
+    implementation("com.github.ajalt.clikt:clikt:3.2.0")
     implementation("org.mapdb:mapdb:3.0.8")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
