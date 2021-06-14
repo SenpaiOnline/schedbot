@@ -23,6 +23,7 @@ dependencies {
     }*/
     implementation("com.alex1304.botrino:botrino-command:1.0.0-M2")
     implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("io.github.microutils:kotlin-logging-jvm:2.0.8")
     implementation("io.netty:netty-transport-native-epoll:4.1.60.Final")
     implementation("io.honeybadger:honeybadger-java:2.0.2")
     implementation("com.github.ajalt.clikt:clikt:3.2.0")
