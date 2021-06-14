@@ -14,6 +14,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
+    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     /*implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.4.2")*/
     /*implementation("com.discord4j:discord4j-core") {
         version {
