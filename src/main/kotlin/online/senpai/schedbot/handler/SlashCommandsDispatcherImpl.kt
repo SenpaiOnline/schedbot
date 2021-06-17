@@ -34,6 +34,7 @@ class SlashCommandsDispatcherImpl : SlashCommandsDispatcher, KoinComponent {
             .flux()
             .flatMap { applicationId: Long ->
                 slashCommandImplementations // FIXME commands can overwrite each other
+                    .filter { command: SlashCommand -> command.enabled }
                     .flatMap { command: SlashCommand ->
                         when (val scope: SlashCommand.Scope = command.scope) {
                             is SlashCommand.Scope.Guild -> {

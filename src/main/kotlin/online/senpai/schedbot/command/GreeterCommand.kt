@@ -12,6 +12,7 @@ private const val TEST_GUILD_ID = 803383152688365599L
 
 @Suppress("unused")
 object GreeterCommand : SlashCommand {
+    override val enabled: Boolean = true
     override val scope = SlashCommand.Scope.Guild(TEST_GUILD_ID)
     override val commandRequest: ApplicationCommandRequest = ApplicationCommandRequest.builder()
         .name("hello")

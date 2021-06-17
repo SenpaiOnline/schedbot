@@ -5,6 +5,7 @@ import discord4j.discordjson.json.ApplicationCommandRequest
 import reactor.core.publisher.Mono
 
 sealed interface SlashCommand {
+    val enabled: Boolean
     val commandRequest: ApplicationCommandRequest
     val scope: Scope
     fun handler(event: InteractionCreateEvent): Mono<Void>
