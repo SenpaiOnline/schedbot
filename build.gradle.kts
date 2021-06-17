@@ -92,7 +92,7 @@ detekt {
 }
 
 application {
-    mainClass.set("online.senpai.schedbot.MainKt")
+    mainClass.set("online.senpai.schedbot.LauncherKt")
 }
 
 tasks.named<ProcessResources>("processResources") {
