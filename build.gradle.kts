@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.5.0"
+    kotlin("jvm") version "1.5.10"
     application
     id("me.qoomon.git-versioning") version "4.2.0"
     id("io.gitlab.arturbosch.detekt").version("1.17.1")
