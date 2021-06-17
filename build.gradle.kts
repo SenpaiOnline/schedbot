@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.5.0"
+    kotlin("jvm") version "1.5.10"
     application
     id("me.qoomon.git-versioning") version "4.2.0"
     id("io.gitlab.arturbosch.detekt").version("1.17.1")
@@ -13,22 +13,21 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    /*implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor:1.4.2")*/
-    /*implementation("com.discord4j:discord4j-core") {
-        version {
-            strictly("3.2.0-SNAPSHOT")
-        }
-    }*/
-    implementation("com.alex1304.botrino:botrino-command:1.0.0-M2")
+    implementation(kotlin("reflect"))
+    implementation("com.discord4j:discord4j-core:3.2.0-M3")
+    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("ch.qos.logback:logback-classic:1.2.3")
-    implementation("io.netty:netty-transport-native-epoll:4.1.60.Final")
+    implementation("io.github.microutils:kotlin-logging-jvm:2.0.8")
     implementation("io.honeybadger:honeybadger-java:2.0.2")
-    implementation("com.github.ajalt.clikt:clikt:3.1.0")
+    implementation("com.github.ajalt.clikt:clikt:3.2.0")
     implementation("org.mapdb:mapdb:3.0.8")
+    implementation("io.insert-koin:koin-core:3.1.0")
+    implementation("io.insert-koin:koin-logger-slf4j:3.1.0")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
 
     testImplementation("io.kotest:kotest-runner-junit5:4.4.3")
+    testImplementation("io.insert-koin:koin-test:3.1.0")
 }
 
 tasks {
@@ -93,5 +92,9 @@ detekt {
 }
 
 application {
-    mainClass.set("online.senpai.schedbot.MainKt")
+    mainClass.set("online.senpai.schedbot.LauncherKt")
+}
+
+tasks.named<ProcessResources>("processResources") {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
