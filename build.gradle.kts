@@ -101,3 +101,7 @@ detekt {
 application {
     mainClass.set("online.senpai.schedbot.MainKt")
 }
+
+tasks.named<ProcessResources>("processResources") {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
