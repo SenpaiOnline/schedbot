@@ -26,7 +26,7 @@ dependencies {
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
 
-    testImplementation("io.kotest:kotest-runner-junit5:4.4.3")
+    testImplementation("io.kotest:kotest-runner-junit5:4.6.0")
     testImplementation("io.insert-koin:koin-test:3.1.0")
 }
 
