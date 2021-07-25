@@ -2,7 +2,7 @@ package online.senpai.schedbot.handler
 
 import discord4j.core.GatewayDiscordClient
 import discord4j.core.`object`.command.ApplicationCommandInteractionOption
-import discord4j.core.event.domain.InteractionCreateEvent
+import discord4j.core.event.domain.interaction.InteractionCreateEvent
 import discord4j.discordjson.json.ApplicationCommandData
 import discord4j.rest.util.ApplicationCommandOptionType
 import mu.KLogger

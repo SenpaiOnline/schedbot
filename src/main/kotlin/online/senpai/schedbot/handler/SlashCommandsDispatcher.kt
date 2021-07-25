@@ -1,6 +1,6 @@
 package online.senpai.schedbot.handler
 
-import discord4j.core.event.domain.InteractionCreateEvent
+import discord4j.core.event.domain.interaction.InteractionCreateEvent
 import reactor.core.publisher.Mono
 
 interface SlashCommandsDispatcher {

@@ -2,7 +2,7 @@ package online.senpai.schedbot.command.standalone
 
 import discord4j.core.`object`.command.ApplicationCommandInteractionOption
 import discord4j.core.`object`.command.ApplicationCommandInteractionOptionValue
-import discord4j.core.event.domain.InteractionCreateEvent
+import discord4j.core.event.domain.interaction.InteractionCreateEvent
 import discord4j.discordjson.json.ApplicationCommandRequest
 import discord4j.rest.util.ApplicationCommandOptionType
 import online.senpai.schedbot.command.FIRST_TEST_GUILD_ID

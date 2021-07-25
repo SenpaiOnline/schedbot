@@ -2,7 +2,7 @@ package online.senpai.schedbot.handler
 
 import discord4j.core.GatewayDiscordClient
 import discord4j.core.event.ReactiveEventAdapter
-import discord4j.core.event.domain.InteractionCreateEvent
+import discord4j.core.event.domain.interaction.InteractionCreateEvent
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import reactor.core.publisher.Mono
