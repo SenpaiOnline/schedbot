@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm") version "1.5.21"
     application
     id("me.qoomon.git-versioning") version "4.2.0"
     id("io.gitlab.arturbosch.detekt").version("1.17.1")
@@ -14,7 +14,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
-    implementation("com.discord4j:discord4j-core:3.2.0-M3")
+    implementation("com.discord4j:discord4j-core:3.2.0-RC1")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation("io.github.microutils:kotlin-logging-jvm:2.0.8")
