@@ -2,7 +2,7 @@ package online.senpai.schedbot.handler
 
 import discord4j.core.GatewayDiscordClient
 import discord4j.core.`object`.command.ApplicationCommandInteractionOption
-import discord4j.core.event.domain.InteractionCreateEvent
+import discord4j.core.event.domain.interaction.SlashCommandEvent
 import discord4j.discordjson.json.ApplicationCommandData
 import discord4j.rest.util.ApplicationCommandOptionType
 import mu.KLogger
@@ -26,7 +26,7 @@ import kotlin.reflect.KClass
 private val logger: KLogger = KotlinLogging.logger {}
 private val reactorLogger: Logger = Loggers.getLogger(SlashCommandsDispatcherImpl::class.java)
 
-typealias SlashCommandHandler = (event: InteractionCreateEvent) -> Mono<Void>
+typealias SlashCommandHandler = (event: SlashCommandEvent) -> Mono<Void>
 
 class SlashCommandsDispatcherImpl : SlashCommandsDispatcher, KoinComponent {
     private val discordClient: GatewayDiscordClient by inject()
@@ -279,11 +279,12 @@ class SlashCommandsDispatcherImpl : SlashCommandsDispatcher, KoinComponent {
         deleteGuildCommands()
             .then(deleteGlobalCommands())
 
-    override fun dispatchInteractionEvent(event: InteractionCreateEvent): Mono<Void> { // TODO better dispatching
-        val route: MutableList<String> = mutableListOf(event.interaction.data.data().get().name())
+    override fun dispatchSlashCommandEvent(event: SlashCommandEvent): Mono<Void> { // TODO better dispatching
+        val route: MutableList<String> = mutableListOf(event.interaction.data.data().get().name().get())
         val subcommand: ApplicationCommandInteractionOption? = event
             .interaction
             .commandInteraction
+            .get()
             .options
             .firstOrNull()
         val guildId: Long? = event // FIXME A global command sent from a guild won't be resolved

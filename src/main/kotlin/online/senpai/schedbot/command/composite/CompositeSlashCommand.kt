@@ -1,6 +1,6 @@
 package online.senpai.schedbot.command.composite
 
-import discord4j.core.event.domain.InteractionCreateEvent
+import discord4j.core.event.domain.interaction.InteractionCreateEvent
 import discord4j.discordjson.json.ApplicationCommandOptionData
 import online.senpai.schedbot.command.CompositeClassDefinition
 import reactor.core.publisher.Flux

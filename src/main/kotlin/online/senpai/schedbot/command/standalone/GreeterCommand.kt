@@ -2,7 +2,7 @@ package online.senpai.schedbot.command.standalone
 
 import discord4j.core.`object`.command.ApplicationCommandInteractionOption
 import discord4j.core.`object`.command.ApplicationCommandInteractionOptionValue
-import discord4j.core.event.domain.InteractionCreateEvent
+import discord4j.core.event.domain.interaction.SlashCommandEvent
 import discord4j.discordjson.json.ApplicationCommandRequest
 import discord4j.rest.util.ApplicationCommandOptionType
 import online.senpai.schedbot.command.FIRST_TEST_GUILD_ID
@@ -25,7 +25,7 @@ object GreeterCommand : StandaloneSlashCommand {
         }
     }
 
-    override fun handler(event: InteractionCreateEvent): Mono<Void> =
+    override fun handler(event: SlashCommandEvent): Mono<Void> =
         event
             .acknowledge()
             .then(
@@ -35,6 +35,7 @@ object GreeterCommand : StandaloneSlashCommand {
                         event
                             .interaction
                             .commandInteraction
+                            .get()
                             .getOption("name")
                             .flatMap(ApplicationCommandInteractionOption::getValue)
                             .map(ApplicationCommandInteractionOptionValue::asString)
