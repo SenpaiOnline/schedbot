@@ -9,7 +9,6 @@ import discord4j.core.`object`.entity.channel.Channel
 import discord4j.core.event.domain.interaction.SlashCommandEvent
 import reactor.core.publisher.Mono
 
-
 fun <T> SlashCommandEvent.getOptionAs(
     transform: (ApplicationCommandInteractionOptionValue) -> T,
     optionName: String
@@ -170,6 +169,9 @@ fun SlashCommandEvent.getOptionAsMention(optionName: String): Mono<String> =
         }
     )
 
+fun SlashCommandEvent.getOptionAsMention(optionName: String, defaultValue: String): Mono<String> =
+    getOptionAsMention(optionName).defaultIfEmpty(defaultValue)
+
 fun SlashCommandEvent.getSubcommandOptionAsMention(optionName: String): Mono<String> =
     getSubcommandOptionAs(
         optionName = optionName,
@@ -178,4 +180,7 @@ fun SlashCommandEvent.getSubcommandOptionAsMention(optionName: String): Mono<Str
             optionValue.asMention(this.interaction.guildId.orElse(null))
         }
     )
+
+fun SlashCommandEvent.getSubcommandOptionAsMention(optionName: String, defaultValue: String): Mono<String> =
+    getSubcommandOptionAsMention(optionName).defaultIfEmpty(defaultValue)
 /*MENTION ENDS*/
