@@ -136,11 +136,14 @@ fun SlashCommandEvent.getSubcommandOptionAsSnowflakeOrElse(optionName: String, d
 /*SNOWFLAKE ENDS*/
 
 /*USER BEGINS*/
-fun SlashCommandEvent.getOptionAsUser(optionName: String): Mono<User> =
-    getOptionAs(ApplicationCommandInteractionOptionValue::asUser, optionName, Mono.empty())
+fun SlashCommandEvent.getOptionAsUser(optionName: String, defaultUser: Mono<User> = Mono.empty()): Mono<User> =
+    getOptionAs(ApplicationCommandInteractionOptionValue::asUser, optionName, defaultUser)
 
-fun SlashCommandEvent.getSubcommandOptionAsUser(optionName: String): Mono<User> =
-    getSubcommandOptionAs(ApplicationCommandInteractionOptionValue::asUser, optionName, Mono.empty())
+fun SlashCommandEvent.getSubcommandOptionAsUser(
+    optionName: String,
+    defaultUser: Mono<User> = Mono.empty()
+): Mono<User> =
+    getSubcommandOptionAs(ApplicationCommandInteractionOptionValue::asUser, optionName, defaultUser)
 /*USER ENDS*/
 
 /*ROLE BEGINS*/
