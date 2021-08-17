@@ -1,6 +1,6 @@
 package online.senpai.schedbot.command.composite
 
-import discord4j.core.event.domain.interaction.InteractionCreateEvent
+import discord4j.core.event.domain.interaction.SlashCommandEvent
 import discord4j.discordjson.json.ApplicationCommandOptionData
 import online.senpai.schedbot.command.CompositeClassDefinition
 import reactor.core.publisher.Flux
@@ -13,6 +13,6 @@ sealed interface CompositeSlashCommand {
 
     interface Subcommand {
         val definition: ApplicationCommandOptionData
-        fun handler(event: InteractionCreateEvent): Mono<Void> = Mono.empty()
+        fun handler(event: SlashCommandEvent): Mono<Void> = Mono.empty()
     }
 }
