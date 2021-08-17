@@ -152,11 +152,17 @@ fun SlashCommandEvent.getSubcommandOptionAsRole(optionName: String): Mono<Role> 
 /*ROLE ENDS*/
 
 /*CHANNEL BEGINS*/
-fun SlashCommandEvent.getOptionAsChannel(optionName: String): Mono<Channel> =
-    getOptionAs(ApplicationCommandInteractionOptionValue::asChannel, optionName, Mono.empty())
+fun SlashCommandEvent.getOptionAsChannel(
+    optionName: String,
+    defaultChannel: Mono<Channel> = Mono.empty()
+): Mono<Channel> =
+    getOptionAs(ApplicationCommandInteractionOptionValue::asChannel, optionName, defaultChannel)
 
-fun SlashCommandEvent.getSubcommandOptionAsChannel(optionName: String): Mono<Channel> =
-    getSubcommandOptionAs(ApplicationCommandInteractionOptionValue::asChannel, optionName, Mono.empty())
+fun SlashCommandEvent.getSubcommandOptionAsChannel(
+    optionName: String,
+    defaultChannel: Mono<Channel> = Mono.empty()
+): Mono<Channel> =
+    getSubcommandOptionAs(ApplicationCommandInteractionOptionValue::asChannel, optionName, defaultChannel)
 /*CHANNEL ENDS*/
 
 /*MENTION BEGINS*/
