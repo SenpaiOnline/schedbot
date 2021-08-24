@@ -14,7 +14,7 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
-    implementation("com.discord4j:discord4j-core:3.2.0-RC1")
+    implementation("com.discord4j:discord4j-core:3.2.0-RC3")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("ch.qos.logback:logback-classic:1.2.3")
     implementation("io.github.microutils:kotlin-logging-jvm:2.0.8")
