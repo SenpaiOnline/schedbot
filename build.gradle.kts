@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.5.21"
+    kotlin("jvm") version "1.5.30"
     application
     id("me.qoomon.git-versioning") version "4.2.0"
     id("io.gitlab.arturbosch.detekt").version("1.17.1")
@@ -12,22 +12,20 @@ repositories {
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
-    implementation(kotlin("reflect"))
     implementation("com.discord4j:discord4j-core:3.2.0-RC3")
-    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
-    implementation("ch.qos.logback:logback-classic:1.2.3")
-    implementation("io.github.microutils:kotlin-logging-jvm:2.0.8")
+    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.4")
+    implementation("ch.qos.logback:logback-classic:1.2.5")
+    implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
     implementation("io.honeybadger:honeybadger-java:2.0.2")
     implementation("com.github.ajalt.clikt:clikt:3.2.0")
     implementation("org.mapdb:mapdb:3.0.8")
-    implementation("io.insert-koin:koin-core:3.1.0")
-    implementation("io.insert-koin:koin-logger-slf4j:3.1.0")
+    implementation("io.insert-koin:koin-core:3.1.2")
+    implementation("io.insert-koin:koin-logger-slf4j:3.1.2")
 
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.17.1")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.18.0")
 
-    testImplementation("io.kotest:kotest-runner-junit5:4.6.0")
-    testImplementation("io.insert-koin:koin-test:3.1.0")
+    testImplementation("io.kotest:kotest-runner-junit5:4.6.1")
+    testImplementation("io.insert-koin:koin-test:3.1.2")
 }
 
 tasks {
