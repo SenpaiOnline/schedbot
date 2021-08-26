@@ -1,46 +1,48 @@
 package online.senpai.schedbot.command
 
+import discord4j.discordjson.json.ApplicationCommandOptionChoiceData
 import discord4j.discordjson.json.ApplicationCommandOptionData
 import discord4j.discordjson.json.ApplicationCommandRequest
 import discord4j.rest.util.ApplicationCommandOptionType
 import online.senpai.schedbot.command.composite.CompositeSlashCommand
 
-class SubcommandCommandBuilder {
-    private val optionBuilder = OptionBuilder()
-    var name = ""
-    var description = ""
+@DslMarker
+annotation class SlashCommandDsl
 
-    fun addOption(init: OptionBuilder.() -> Unit): Boolean = optionBuilder.apply(init).addOption()
-
-    fun build(): ApplicationCommandOptionData =
-        ApplicationCommandOptionData
-            .builder()
-            .description(description)
-            .name(name.lowercase())
-            .type(ApplicationCommandOptionType.SUB_COMMAND.value)
-            .addAllOptions(optionBuilder.build())
-            .build()
-}
-
+@SlashCommandDsl
 class OptionBuilder {
-    private val options: MutableSet<ApplicationCommandOptionData> = mutableSetOf()
+    private val choices: MutableList<Pair<String, Any>> = mutableListOf()
     var name = ""
     var description = ""
     var required = false
     var type: ApplicationCommandOptionType = ApplicationCommandOptionType.STRING
 
-    fun addOption(): Boolean =
-        options.add(
-            ApplicationCommandOptionData
-                .builder()
-                .name(name.lowercase())
-                .description(description)
-                .required(required)
-                .type(type.value)
-                .build()
-        )
+    fun choices(init: ChoiceBuilder.() -> Unit): Boolean = choices.addAll(ChoiceBuilder().apply(init).build())
 
-    fun build(): MutableList<ApplicationCommandOptionData> = options.toMutableList()
+    internal fun build(): ApplicationCommandOptionData =
+        ApplicationCommandOptionData
+            .builder()
+            .name(name.lowercase())
+            .description(description)
+            .required(required)
+            .type(type.value)
+            .choices(choices.map { (name: String, value: Any) ->
+                ApplicationCommandOptionChoiceData
+                    .builder()
+                    .name(name)
+                    .value(value)
+                    .build()
+            })
+            .build()
+}
+
+@SlashCommandDsl
+class ChoiceBuilder {
+    private val choices: MutableList<Pair<String, Any>> = mutableListOf()
+
+    infix fun String.to(value: Any): Boolean = choices.add(Pair(this, value))
+
+    fun build(): MutableList<Pair<String, Any>> = choices
 }
 
 data class CompositeClassDefinition(
@@ -48,59 +50,75 @@ data class CompositeClassDefinition(
     val subcommands: Set<CompositeSlashCommand.Subcommand>
 )
 
+@SlashCommandDsl
 class SubcommandBuilder {
-    private val subcommands: MutableSet<CompositeSlashCommand.Subcommand> = mutableSetOf()
-    lateinit var subcommand: CompositeSlashCommand.Subcommand
+    private val subcommands: MutableList<CompositeSlashCommand.Subcommand> = mutableListOf()
 
-    fun addSubcommand(): Boolean = subcommands.add(subcommand)
+    operator fun CompositeSlashCommand.Subcommand.unaryPlus(): Boolean = subcommands.add(this)
 
-    fun build(): Set<CompositeSlashCommand.Subcommand> = subcommands
+    internal fun build(): Set<CompositeSlashCommand.Subcommand> = subcommands.toSet()
 }
 
-class CompositeCommandBuilder {
-    private val subcommandBuilder = SubcommandBuilder()
+@SlashCommandDsl
+class SubcommandCommandBuilder {
+    private val options: MutableList<ApplicationCommandOptionData> = mutableListOf()
     var name = ""
     var description = ""
 
-    fun addSubcommand(init: SubcommandBuilder.() -> Unit): Boolean =
-        subcommandBuilder.apply(init).addSubcommand()
+    fun option(init: OptionBuilder.() -> Unit): Boolean = options.add(OptionBuilder().apply(init).build())
 
-    fun build(): CompositeClassDefinition {
-        val subcommands: Set<CompositeSlashCommand.Subcommand> = subcommandBuilder.build()
-        val definition: ApplicationCommandRequest = ApplicationCommandRequest
+    internal fun build(): ApplicationCommandOptionData =
+        ApplicationCommandOptionData
+            .builder()
+            .description(description)
+            .name(name.lowercase())
+            .type(ApplicationCommandOptionType.SUB_COMMAND.value)
+            .addAllOptions(options)
+            .build()
+}
+
+@SlashCommandDsl
+class CompositeCommandBuilder {
+    private val subcommands: MutableList<CompositeSlashCommand.Subcommand> = mutableListOf()
+    var name = ""
+    var description = ""
+
+    fun subcommands(init: SubcommandBuilder.() -> Unit): Boolean =
+        subcommands.addAll(SubcommandBuilder().apply(init).build())
+
+    internal fun build(): CompositeClassDefinition = CompositeClassDefinition(
+        slashApiDefinition = ApplicationCommandRequest
             .builder()
             .name(name.lowercase())
             .description(description)
-            .addAllOptions(subcommands.map { it.definition })
-            .build()
-        return CompositeClassDefinition(definition, subcommands)
-    }
+            .addAllOptions(subcommands.map(CompositeSlashCommand.Subcommand::definition))
+            .build(),
+        subcommands = subcommands.toSet()
+    )
 }
 
+@SlashCommandDsl
 class StandaloneCommandBuilder {
-    private val optionBuilder = OptionBuilder()
+    private val options: MutableList<ApplicationCommandOptionData> = mutableListOf()
     var name = ""
     var description = ""
 
-    fun addOption(init: OptionBuilder.() -> Unit): Boolean = optionBuilder.apply(init).addOption()
+    fun option(init: OptionBuilder.() -> Unit): Boolean = options.add(OptionBuilder().apply(init).build())
 
-    fun build(): ApplicationCommandRequest =
+    internal fun build(): ApplicationCommandRequest =
         ApplicationCommandRequest
             .builder()
             .description(description)
             .name(name.lowercase())
-            .addAllOptions(optionBuilder.build())
+            .addAllOptions(options)
             .build()
 }
 
-fun defineStandaloneCommand(init: StandaloneCommandBuilder.() -> Unit): ApplicationCommandRequest {
-    return StandaloneCommandBuilder().apply(init).build()
-}
+fun defineStandaloneCommand(init: StandaloneCommandBuilder.() -> Unit): ApplicationCommandRequest =
+    StandaloneCommandBuilder().apply(init).build()
 
-fun defineCompositeCommand(init: CompositeCommandBuilder.() -> Unit): CompositeClassDefinition {
-    return CompositeCommandBuilder().apply(init).build()
-}
+fun defineCompositeCommand(init: CompositeCommandBuilder.() -> Unit): CompositeClassDefinition =
+    CompositeCommandBuilder().apply(init).build()
 
-fun defineSubcommand(init: SubcommandCommandBuilder.() -> Unit): ApplicationCommandOptionData {
-    return SubcommandCommandBuilder().apply(init).build()
-}
+fun defineSubcommand(init: SubcommandCommandBuilder.() -> Unit): ApplicationCommandOptionData =
+    SubcommandCommandBuilder().apply(init).build()
