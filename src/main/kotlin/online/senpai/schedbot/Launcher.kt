@@ -6,8 +6,11 @@ import com.github.ajalt.clikt.parameters.options.option
 import com.github.ajalt.clikt.parameters.options.required
 import com.github.ajalt.clikt.parameters.types.enum
 import com.github.ajalt.clikt.parameters.types.long
+import online.senpai.schedbot.module.databaseModule
 import online.senpai.schedbot.module.discordClientModule
 import online.senpai.schedbot.module.handlersModule
+import online.senpai.schedbot.module.mappersModule
+import online.senpai.schedbot.module.repositoriesModule
 import online.senpai.schedbot.module.servicesModule
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
@@ -26,7 +29,10 @@ object Launcher : CliktCommand() {
             modules(
                 discordClientModule(token, intents),
                 servicesModule,
-                handlersModule
+                handlersModule,
+                databaseModule,
+                mappersModule,
+                repositoriesModule
             )
         }
         Application.runBlocking()

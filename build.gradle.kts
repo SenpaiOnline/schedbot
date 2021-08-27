@@ -1,8 +1,9 @@
 plugins {
     kotlin("jvm") version "1.5.30"
+    kotlin("kapt") version "1.5.30"
     application
     id("me.qoomon.git-versioning") version "4.2.0"
-    id("io.gitlab.arturbosch.detekt").version("1.17.1")
+    id("io.gitlab.arturbosch.detekt").version("1.18.0")
 }
 
 repositories {
@@ -12,15 +13,22 @@ repositories {
 }
 
 dependencies {
+    implementation(kotlin("stdlib"))
+    implementation(kotlin("reflect"))
     implementation("com.discord4j:discord4j-core:3.2.0-RC3")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.1.4")
     implementation("ch.qos.logback:logback-classic:1.2.5")
     implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
     implementation("io.honeybadger:honeybadger-java:2.0.2")
     implementation("com.github.ajalt.clikt:clikt:3.2.0")
-    implementation("org.mapdb:mapdb:3.0.8")
+    implementation("io.r2dbc:r2dbc-spi:0.9.0.M2")
+    implementation("io.r2dbc:r2dbc-pool:0.9.0.M2")
+    implementation("io.r2dbc:r2dbc-h2:0.8.4.RELEASE")
     implementation("io.insert-koin:koin-core:3.1.2")
     implementation("io.insert-koin:koin-logger-slf4j:3.1.2")
+    implementation("online.senpai:newbase60:1.0.1")
+    implementation("org.mapstruct:mapstruct:1.4.2.Final")
+    kapt("org.mapstruct:mapstruct-processor:1.4.2.Final")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.18.0")
 

@@ -9,7 +9,6 @@ import discord4j.core.`object`.entity.channel.Channel
 import discord4j.core.event.domain.interaction.SlashCommandEvent
 import reactor.core.publisher.Mono
 
-
 fun <T> SlashCommandEvent.getOptionAs(
     transform: (ApplicationCommandInteractionOptionValue) -> T,
     optionName: String
@@ -137,27 +136,39 @@ fun SlashCommandEvent.getSubcommandOptionAsSnowflakeOrElse(optionName: String, d
 /*SNOWFLAKE ENDS*/
 
 /*USER BEGINS*/
-fun SlashCommandEvent.getOptionAsUser(optionName: String): Mono<User> =
-    getOptionAs(ApplicationCommandInteractionOptionValue::asUser, optionName, Mono.empty())
+fun SlashCommandEvent.getOptionAsUser(optionName: String, defaultUser: Mono<User> = Mono.empty()): Mono<User> =
+    getOptionAs(ApplicationCommandInteractionOptionValue::asUser, optionName, defaultUser)
 
-fun SlashCommandEvent.getSubcommandOptionAsUser(optionName: String): Mono<User> =
-    getSubcommandOptionAs(ApplicationCommandInteractionOptionValue::asUser, optionName, Mono.empty())
+fun SlashCommandEvent.getSubcommandOptionAsUser(
+    optionName: String,
+    defaultUser: Mono<User> = Mono.empty()
+): Mono<User> =
+    getSubcommandOptionAs(ApplicationCommandInteractionOptionValue::asUser, optionName, defaultUser)
 /*USER ENDS*/
 
 /*ROLE BEGINS*/
-fun SlashCommandEvent.getOptionAsRole(optionName: String): Mono<Role> =
-    getOptionAs(ApplicationCommandInteractionOptionValue::asRole, optionName, Mono.empty())
+fun SlashCommandEvent.getOptionAsRole(optionName: String, defaultRole: Mono<Role> = Mono.empty()): Mono<Role> =
+    getOptionAs(ApplicationCommandInteractionOptionValue::asRole, optionName, defaultRole)
 
-fun SlashCommandEvent.getSubcommandOptionAsRole(optionName: String): Mono<Role> =
-    getSubcommandOptionAs(ApplicationCommandInteractionOptionValue::asRole, optionName, Mono.empty())
+fun SlashCommandEvent.getSubcommandOptionAsRole(
+    optionName: String,
+    defaultRole: Mono<Role> = Mono.empty()
+): Mono<Role> =
+    getSubcommandOptionAs(ApplicationCommandInteractionOptionValue::asRole, optionName, defaultRole)
 /*ROLE ENDS*/
 
 /*CHANNEL BEGINS*/
-fun SlashCommandEvent.getOptionAsChannel(optionName: String): Mono<Channel> =
-    getOptionAs(ApplicationCommandInteractionOptionValue::asChannel, optionName, Mono.empty())
+fun SlashCommandEvent.getOptionAsChannel(
+    optionName: String,
+    defaultChannel: Mono<Channel> = Mono.empty()
+): Mono<Channel> =
+    getOptionAs(ApplicationCommandInteractionOptionValue::asChannel, optionName, defaultChannel)
 
-fun SlashCommandEvent.getSubcommandOptionAsChannel(optionName: String): Mono<Channel> =
-    getSubcommandOptionAs(ApplicationCommandInteractionOptionValue::asChannel, optionName, Mono.empty())
+fun SlashCommandEvent.getSubcommandOptionAsChannel(
+    optionName: String,
+    defaultChannel: Mono<Channel> = Mono.empty()
+): Mono<Channel> =
+    getSubcommandOptionAs(ApplicationCommandInteractionOptionValue::asChannel, optionName, defaultChannel)
 /*CHANNEL ENDS*/
 
 /*MENTION BEGINS*/
@@ -170,6 +181,9 @@ fun SlashCommandEvent.getOptionAsMention(optionName: String): Mono<String> =
         }
     )
 
+fun SlashCommandEvent.getOptionAsMention(optionName: String, defaultValue: String): Mono<String> =
+    getOptionAsMention(optionName).defaultIfEmpty(defaultValue)
+
 fun SlashCommandEvent.getSubcommandOptionAsMention(optionName: String): Mono<String> =
     getSubcommandOptionAs(
         optionName = optionName,
@@ -178,4 +192,7 @@ fun SlashCommandEvent.getSubcommandOptionAsMention(optionName: String): Mono<Str
             optionValue.asMention(this.interaction.guildId.orElse(null))
         }
     )
+
+fun SlashCommandEvent.getSubcommandOptionAsMention(optionName: String, defaultValue: String): Mono<String> =
+    getSubcommandOptionAsMention(optionName).defaultIfEmpty(defaultValue)
 /*MENTION ENDS*/

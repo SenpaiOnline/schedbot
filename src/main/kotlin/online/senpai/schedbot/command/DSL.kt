@@ -10,6 +10,24 @@ import online.senpai.schedbot.command.composite.CompositeSlashCommand
 annotation class SlashCommandDsl
 
 @SlashCommandDsl
+class SubcommandCommandBuilder {
+    private val options: MutableList<ApplicationCommandOptionData> = mutableListOf()
+    var name = ""
+    var description = ""
+
+    fun option(init: OptionBuilder.() -> Unit): Boolean = options.add(OptionBuilder().apply(init).build())
+
+    internal fun build(): ApplicationCommandOptionData =
+        ApplicationCommandOptionData
+            .builder()
+            .description(description)
+            .name(name.lowercase())
+            .type(ApplicationCommandOptionType.SUB_COMMAND.value)
+            .addAllOptions(options)
+            .build()
+}
+
+@SlashCommandDsl
 class OptionBuilder {
     private val choices: MutableList<Pair<String, Any>> = mutableListOf()
     var name = ""
@@ -42,7 +60,7 @@ class ChoiceBuilder {
 
     infix fun String.to(value: Any): Boolean = choices.add(Pair(this, value))
 
-    fun build(): MutableList<Pair<String, Any>> = choices
+    internal fun build(): MutableList<Pair<String, Any>> = choices
 }
 
 data class CompositeClassDefinition(
@@ -55,26 +73,7 @@ class SubcommandBuilder {
     private val subcommands: MutableList<CompositeSlashCommand.Subcommand> = mutableListOf()
 
     operator fun CompositeSlashCommand.Subcommand.unaryPlus(): Boolean = subcommands.add(this)
-
     internal fun build(): Set<CompositeSlashCommand.Subcommand> = subcommands.toSet()
-}
-
-@SlashCommandDsl
-class SubcommandCommandBuilder {
-    private val options: MutableList<ApplicationCommandOptionData> = mutableListOf()
-    var name = ""
-    var description = ""
-
-    fun option(init: OptionBuilder.() -> Unit): Boolean = options.add(OptionBuilder().apply(init).build())
-
-    internal fun build(): ApplicationCommandOptionData =
-        ApplicationCommandOptionData
-            .builder()
-            .description(description)
-            .name(name.lowercase())
-            .type(ApplicationCommandOptionType.SUB_COMMAND.value)
-            .addAllOptions(options)
-            .build()
 }
 
 @SlashCommandDsl
@@ -114,11 +113,14 @@ class StandaloneCommandBuilder {
             .build()
 }
 
-fun defineStandaloneCommand(init: StandaloneCommandBuilder.() -> Unit): ApplicationCommandRequest =
-    StandaloneCommandBuilder().apply(init).build()
+fun defineStandaloneCommand(init: StandaloneCommandBuilder.() -> Unit): ApplicationCommandRequest {
+    return StandaloneCommandBuilder().apply(init).build()
+}
 
-fun defineCompositeCommand(init: CompositeCommandBuilder.() -> Unit): CompositeClassDefinition =
-    CompositeCommandBuilder().apply(init).build()
+fun defineCompositeCommand(init: CompositeCommandBuilder.() -> Unit): CompositeClassDefinition {
+    return CompositeCommandBuilder().apply(init).build()
+}
 
-fun defineSubcommand(init: SubcommandCommandBuilder.() -> Unit): ApplicationCommandOptionData =
-    SubcommandCommandBuilder().apply(init).build()
+fun defineSubcommand(init: SubcommandCommandBuilder.() -> Unit): ApplicationCommandOptionData {
+    return SubcommandCommandBuilder().apply(init).build()
+}

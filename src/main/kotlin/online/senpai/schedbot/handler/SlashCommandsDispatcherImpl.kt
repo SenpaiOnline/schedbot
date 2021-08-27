@@ -299,7 +299,12 @@ class SlashCommandsDispatcherImpl : SlashCommandsDispatcher, KoinComponent {
             route += guildId.toString()
         }
         logger.debug { "Dispatching event with a route: $route" }
-        return slashCommandsRegistry.get(route)?.invoke(event)
+        return slashCommandsRegistry
+            .get(route)
+            ?.invoke(event)
+            ?.onErrorResume { throwable: Throwable ->
+                event.reply("<a:this_is_fine:860917939696173087> $throwable")
+            }
             ?: event.reply("Unable to process the command <a:this_is_fine:860917939696173087>")
     }
 }

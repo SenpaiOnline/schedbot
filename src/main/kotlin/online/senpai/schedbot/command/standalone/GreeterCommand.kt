@@ -17,7 +17,7 @@ object GreeterCommand : StandaloneSlashCommand {
     override val definition: ApplicationCommandRequest = defineStandaloneCommand {
         name = "hello"
         description = "says hello to the given name"
-        addOption {
+        option {
             name = "name"
             description = "Introduce yourself"
             required = true
