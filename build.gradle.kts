@@ -4,6 +4,7 @@ plugins {
     application
     id("me.qoomon.git-versioning") version "4.2.0"
     id("io.gitlab.arturbosch.detekt").version("1.18.0")
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 repositories {
