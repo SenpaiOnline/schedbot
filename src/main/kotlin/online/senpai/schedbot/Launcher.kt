@@ -19,8 +19,8 @@ import org.koin.logger.slf4jLogger
 private const val DEFAULT_INTENTS: Long = 32509
 
 object Launcher : CliktCommand() {
-    private val token: String by option("-t", "--token").required()
-    private val intents: Long by option("--intents").long().default(DEFAULT_INTENTS)
+    private val token: String by option("-t", envvar = "TOKEN").required()
+    private val intents: Long by option("--intents", envvar = "INTENTS").long().default(DEFAULT_INTENTS)
     private val koinLogLevel: Level by option("--koin-log-level").enum<Level>(ignoreCase = true).default(Level.INFO)
 
     override fun run() {
