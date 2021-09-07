@@ -6,10 +6,20 @@ on:
       - 'v*'
 
 jobs:
-  build-uberjar:
+  get-version:
     runs-on: ubuntu-20.04
     outputs:
-      version: ${{ steps.version.outputs.version }}
+      version: ${{ steps.tag.outputs.tag }}
+    steps:
+      - uses: olegtarasov/get-tag@v2.1.1
+        id: tag
+        with:
+          tagRegex: v(.*)
+
+  build-uberjar:
+    runs-on: ubuntu-20.04
+    needs:
+      - get-version
     steps:
       - uses: actions/checkout@v2
 
@@ -21,17 +31,13 @@ jobs:
 
       - uses: gradle/wrapper-validation-action@v1.0.4
 
-      - name: Get version
-        id: version
-        run: echo "::set-output name=version::$(./gradlew version -q --no-daemon)"
-
       - name: Build an uberjar using shadowjar plugin
         run: ./gradlew shadowJar --no-daemon
 
       - name: Archive the resulting jar
         uses: actions/upload-artifact@v2
         with:
-          name: ${{ steps.version.outputs.version }}
+          name: ${{ needs.get-version.outputs.version }}
           path: build/libs/*.jar
           if-no-files-found: error
 
@@ -39,11 +45,12 @@ jobs:
     runs-on: ubuntu-20.04
     needs:
       - build-uberjar
+      - get-version
     steps:
       - name: Download the jar
         uses: actions/download-artifact@v2
         with:
-          name: ${{ needs.build-uberjar.outputs.version }}
+          name: ${{ needs.get-version.outputs.version }}
 
       - name: Rename the jar
         run: mv *.jar schedbot.jar
@@ -55,7 +62,7 @@ jobs:
           base-image: docker.io/bellsoft/liberica-openjre-alpine:11.0.12-7
           image: schedbot
           oci: true
-          tags: latest ${{ needs.build-uberjar.outputs.version }}
+          tags: latest ${{ needs.get-version.outputs.version }}
           workdir: /app
           content: |
             schedbot.jar
@@ -74,17 +81,18 @@ jobs:
     runs-on: ubuntu-20.04
     needs:
       - build-uberjar
+      - get-version
     steps:
       - name: Download the jar
         uses: actions/download-artifact@v2
         with:
-          name: ${{ needs.build-uberjar.outputs.version }}
+          name: ${{ needs.get-version.outputs.version }}
 
       - name: Create a new release
         uses: marvinpinto/action-automatic-releases@v1.2.1
         with:
           repo_token: ${{ github.token }}
-          automatic_release_tag: ${{ needs.build-uberjar.outputs.version }}
+          automatic_release_tag: ${{ needs.get-version.outputs.version }}
           prerelease: false
           title: ${{ github.token }}
           files: |
