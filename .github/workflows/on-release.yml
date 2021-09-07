@@ -73,7 +73,7 @@ jobs:
         with:
           image: ${{ steps.build-image.outputs.image }}
           tags: ${{ steps.build-image.outputs.tags }}
-          registry: ghcr.io/${{ github.repository_owner }}
+          registry: ghcr.io/senpaionline
           username: ${{ github.actor }}
           password: ${{ github.token }}
 
@@ -94,6 +94,6 @@ jobs:
           repo_token: ${{ github.token }}
           automatic_release_tag: ${{ needs.get-version.outputs.version }}
           prerelease: false
-          title: ${{ github.token }}
+          title: ${{ needs.get-version.outputs.version }}
           files: |
             *.jar
